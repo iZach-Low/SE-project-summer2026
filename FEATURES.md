@@ -4,3 +4,36 @@ What we need before August 10:
 - A Home view of the project (UI)
 - User Stories Def.
 - A full prototype 
+
+
+# FEATURES
+
+## Sprint 1 - Planning & Setup (complete)
+- Django boilerplate running locally (complete)
+- User stories defined (in-progress)
+- Agreed data model for an assignment (in-progress)
+
+## Sprint 2 - Assignments Core
+- Assignment model: title, due date/time, class name, done flag
+- Manual add assignment form
+- List view showing all assignments
+
+## Sprint 3 - Countdown Logic
+- Calculate time remaining per assignment
+- Highlight the nearest upcoming assignment
+- Handle overdue assignments
+
+## Sprint 4 - Timer Widget & Editing
+- Fixed-position corner countdown widget on the page
+- Edit assignment
+- Delete assignment
+
+## Sprint 5 - User Management & Polish
+- User accounts (register / login / logout)
+- Assignments tied to the logged-in user
+- Visual reminder/alert when an assignment is due soon
+- Styling and empty states
+
+## Sprint 6 - Docs & Demo
+- Write README
+- Final presentation and demo prep
