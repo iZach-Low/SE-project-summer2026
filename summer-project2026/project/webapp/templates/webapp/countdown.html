@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Assignment Countdown Widget</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        body {
+            background-color: #eef1f5;
+        }
+
+        .widget-container {
+            max-width: 500px;
+        }
+
+        .assignment-widget {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .widget-header {
+            background-color: #212529;
+            color: white;
+            padding: 18px 22px;
+        }
+
+        .assignment-item {
+            padding: 18px 22px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
+
+        .class-name {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 2px;
+        }
+
+        .assignment-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .due-date {
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .countdown {
+            font-size: 1.05rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .widget-footer {
+            background-color: #f8f9fa;
+            padding: 12px 22px;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container py-5">
+        <div class="widget-container mx-auto">
+
+            <section class="card assignment-widget shadow">
+
+                <header
+                    class="widget-header d-flex
+                           justify-content-between align-items-center"
+                >
+                    <div>
+                        <h1 class="h5 mb-1">Upcoming Assignments</h1>
+
+                        <p class="small mb-0 text-white-50">
+                            Your nearest deadlines
+                        </p>
+                    </div>
+
+                    <span class="badge rounded-pill text-bg-light">
+                        {{ assignments|length }}
+                    </span>
+                </header>
+
+                {% if assignments %}
+
+                    <div>
+
+                        {% for assignment in assignments %}
+
+                            <article class="assignment-item">
+
+                                <div
+                                    class="d-flex flex-column flex-sm-row
+                                           justify-content-between gap-3"
+                                >
+                                    <div>
+                                        <div class="class-name">
+                                            {{ assignment.class_name }}
+                                        </div>
+
+                                        <div class="assignment-title">
+                                            {{ assignment.title }}
+                                        </div>
+
+                                        <div class="due-date">
+                                            Due
+                                            {{ assignment.due_date|date:"M j, Y \a\t g:i A" }}
+                                        </div>
+                                    </div>
+
+                                    <div class="text-sm-end">
+                                        <div class="small text-muted mb-1">
+                                            Time remaining
+                                        </div>
+
+                                        <div
+                                            class="countdown"
+                                            data-due-date="{{ assignment.due_date|date:'c' }}"
+                                            aria-live="polite"
+                                        >
+                                            Loading...
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <footer class="widget-footer">
+                        Showing the nearest assignments. Assignments due on
+                        the same day as the third deadline are also included.
+                    </footer>
+
+                {% else %}
+
+                    <div class="p-4 text-center">
+                        <h2 class="h6">No upcoming assignments</h2>
+
+                        <p class="text-muted mb-0">
+                            You're all caught up.
+                        </p>
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const countdownElements =
+            document.querySelectorAll(".countdown");
+
+        function updateCountdown(element) {
+            const dueDate = new Date(element.dataset.dueDate);
+            const currentTime = new Date();
+            const timeRemaining = dueDate - currentTime;
+
+            if (Number.isNaN(dueDate.getTime())) {
+                element.textContent = "Invalid due date";
+                element.classList.add("text-danger");
+                return;
+            }
+
+            if (timeRemaining <= 0) {
+                element.textContent = "Due now!";
+                element.classList.add("text-danger");
+                element.classList.remove("text-warning");
+                return;
+            }
+
+            const days = Math.floor(
+                timeRemaining / (1000 * 60 * 60 * 24)
+            );
+
+            const hours = Math.floor(
+                (timeRemaining / (1000 * 60 * 60)) % 24
+            );
+
+            const minutes = Math.floor(
+                (timeRemaining / (1000 * 60)) % 60
+            );
+
+            const seconds = Math.floor(
+                (timeRemaining / 1000) % 60
+            );
+
+            element.textContent =
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            element.classList.remove(
+                "text-danger",
+                "text-warning",
+                "text-success"
+            );
+
+            if (timeRemaining <= 24 * 60 * 60 * 1000) {
+                element.classList.add("text-danger");
+            } else if (timeRemaining <= 72 * 60 * 60 * 1000) {
+                element.classList.add("text-warning");
+            } else {
+                element.classList.add("text-success");
+            }
+        }
+
+        function updateAllCountdowns() {
+            countdownElements.forEach(updateCountdown);
+        }
+
+        updateAllCountdowns();
+        setInterval(updateAllCountdowns, 1000);
+    </script>
+
+</body>
+</html>
