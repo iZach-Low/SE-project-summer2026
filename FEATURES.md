@@ -14,7 +14,7 @@ What we need before August 10:
 - Agreed data model for an assignment (in-progress)
 
 ## Sprint 2 - Assignments Core
-- Assignment model: title, due date/time, class name, done flag
+- Assignment model: title, due date/time, class name, done flag (complete)
 - Manual add assignment form
 - List view showing all assignments
 
