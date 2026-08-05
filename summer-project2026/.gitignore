@@ -13,3 +13,9 @@ virt
 # Data bases
 db.sqlite3
 mydb.py
+
+__pycache__/
+*.py[cod]
+db.sqlite3
+.venv/
+.DS_Store
