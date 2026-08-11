@@ -1,14 +1,55 @@
 from datetime import datetime, time
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from .models import Assignment
+from .forms import RegisterForm, AssignmentForm
 
 
+def home(request):
+    return redirect("countdown")
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request,user)
+            return redirect("countdown")
+    else:
+        form = RegisterForm()
+    return render(request,"webapp/register.html",
+        {"form": form}
+     )
+@login_required
+def add_assignment(request):
+    if request.method == "POST":
+        form = AssignmentForm(request.POST)
+
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.user = request.user
+            assignment.save()
+
+            return redirect("countdown")
+    else:
+        form = AssignmentForm()
+
+    return render(
+        request,
+        "webapp/add_assignment.html",
+        {"form": form}
+    )
+ 
 def countdown_widget(request):
+
     upcoming_assignments = list(
         Assignment.objects.filter(
+            user=request.user,
             done=False,
             due_date__gt=timezone.now(),
         ).order_by("due_date")
