@@ -1,17 +1,72 @@
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import NoteForm
+from .forms import AssignmentForm, NoteForm, RegisterForm
 from .models import Assignment, Note
 
 
-# =========================
-# Countdown Widget
-# =========================
+# ========================
+# Register
+# ========================
 
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            return redirect("home")
+    else:
+        form = RegisterForm()
+
+    return render(
+        request,
+        "webapp/register.html",
+        {"form": form},
+    )
+
+
+# ========================
+# Add Assignment
+# ========================
+
+@login_required
+def add_assignment(request):
+    if request.method == "POST":
+        form = AssignmentForm(request.POST)
+
+        if form.is_valid():
+            assignment = form.save(commit=False)
+
+            # Automatically make the logged-in user
+            # the owner of the assignment.
+            assignment.user = request.user
+            assignment.save()
+
+            return redirect("home")
+    else:
+        form = AssignmentForm()
+
+    return render(
+        request,
+        "webapp/add_assignment.html",
+        {"form": form},
+    )
+
+
+# ========================
+# Countdown Widget
+# ========================
+
+@login_required
 def countdown_widget(request):
     upcoming_assignments = list(
         Assignment.objects.filter(
+            user=request.user,
             done=False,
             due_date__gt=timezone.now(),
         ).order_by("due_date")
@@ -46,9 +101,9 @@ def countdown_widget(request):
     )
 
 
-# =========================
+# ========================
 # Notes List
-# =========================
+# ========================
 
 def notes_list(request):
     notes = Note.objects.all().order_by("-updated_at")
@@ -60,9 +115,9 @@ def notes_list(request):
     )
 
 
-# =========================
+# ========================
 # Create Note
-# =========================
+# ========================
 
 def create_note(request):
     if request.method == "POST":
@@ -84,9 +139,9 @@ def create_note(request):
     )
 
 
-# =========================
+# ========================
 # Edit Note
-# =========================
+# ========================
 
 def edit_note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
@@ -110,9 +165,9 @@ def edit_note(request, note_id):
     )
 
 
-# =========================
+# ========================
 # Delete Note
-# =========================
+# ========================
 
 def delete_note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
@@ -122,9 +177,16 @@ def delete_note(request, note_id):
 
     return redirect("notes_list")
 
+
+# ========================
+# Home
+# ========================
+
+@login_required
 def home(request):
     upcoming_assignments = list(
         Assignment.objects.filter(
+            user=request.user,
             done=False,
             due_date__gt=timezone.now(),
         ).order_by("due_date")
