@@ -11,16 +11,16 @@ What we need before August 10:
 ## Sprint 1 - Planning & Setup (complete)
 - Django boilerplate running locally (complete)
 - User stories defined (in-progress)
-- Agreed data model for an assignment (in-progress)
+- Agreed data model for an assignment (complete)
 
 ## Sprint 2 - Assignments Core
 - Assignment model: title, due date/time, class name, done flag (complete)
-- Manual add assignment form
-- List view showing all assignments
+- Manual add assignment form (in-progress) *Need button to get to page
+- List view showing all assignments (complete)
 
 ## Sprint 3 - Countdown Logic
-- Calculate time remaining per assignment
-- Highlight the nearest upcoming assignment
+- Calculate time remaining per assignment (complete)
+- Highlight the nearest upcoming assignment (complete)
 - Handle overdue assignments
 
 ## Sprint 4 - Timer Widget & Editing
@@ -29,7 +29,7 @@ What we need before August 10:
 - Delete assignment
 
 ## Sprint 5 - User Management & Polish
-- User accounts (register / login / logout)
+- User accounts (register / login / logout) (in-progress)
 - Assignments tied to the logged-in user
 - Visual reminder/alert when an assignment is due soon
 - Styling and empty states
