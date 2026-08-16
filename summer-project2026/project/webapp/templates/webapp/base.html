@@ -1,0 +1,170 @@
+{% comment %}
+  base.html — the shared "shell" every page inherits.
+  Written ONCE here; all other templates extend it, so the theme
+  lives in a single file. Change a color here → every page updates.
+
+  How inheritance works:
+  - This file defines {% block %} slots that child pages fill in.
+  - A child page says {% extends "webapp/base.html" %} then fills
+    the blocks. Everything outside the blocks (head, fonts, CSS,
+    nav bar) is inherited automatically.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% comment %}
+      {% block title %} lets each page set its own <title> text.
+      If a page doesn't override it, it falls back to the default below.
+    {% endcomment %}
+    <title>{% block title %}Assignment Reminder{% endblock %}</title>
+
+    {% comment %} Bootstrap stays — it does the layout/grid work.
+       The library CSS below layers ON TOP to override the look. {% endcomment %}
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    {% comment %} Library theme fonts: Playfair Display (headings)
+       + Lora (body). Loaded once here for all pages. {% endcomment %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           LIBRARY THEME
+           These rules repaint Bootstrap's components in library colors.
+           We override LOOK (color, font, background) but let Bootstrap
+           keep doing STRUCTURE (grid, spacing, responsiveness).
+           ============================================================ */
+
+        /* Warm espresso-wood background across every page */
+        body {
+            font-family: "Lora", Georgia, serif;
+            color: #3b2f2a;                 /* dark brown text */
+            background-color: #2e211a;      /* fallback if gradient fails */
+            background-image:
+                radial-gradient(ellipse at top, rgba(120, 85, 55, 0.45), transparent 60%),
+                repeating-linear-gradient(
+                    90deg,
+                    #3a2a1e 0px, #3a2a1e 38px,
+                    #34251a 38px, #34251a 76px
+                );                          /* subtle wood-plank stripes */
+            min-height: 100vh;
+        }
+
+        /* Headings use the display serif for that "book title" feel */
+        h1, h2, h3, .navbar-brand {
+            font-family: "Playfair Display", Georgia, serif;
+            color: #4a3524;
+        }
+
+        /* Nav bar → dark wood instead of Bootstrap's bg-dark black.
+           We override Bootstrap's .navbar-dark colors here. */
+        .navbar.bg-dark {
+            background-color: #241a12 !important;  /* !important beats Bootstrap's own rule */
+            border-bottom: 2px solid #b08d3f;      /* brass-gold rule */
+        }
+        .navbar-brand { color: #f4ecd8 !important; }
+
+        /* Cards → aged parchment instead of white */
+        .card {
+            background-color: #f4ecd8;
+            border: 1px solid #d8c9a3;
+            border-radius: 6px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        /* Any Bootstrap card-footer/header that was white → parchment too,
+           so white doesn't "show through" the theme (the leak-through
+           tradeoff we talked about — this is us patching it proactively). */
+        .card-footer.bg-white,
+        .card-body.bg-white { background-color: #f4ecd8 !important; }
+
+        /* Muted helper text → warm brown-gray instead of Bootstrap gray */
+        .text-muted { color: #7a6650 !important; }
+
+        /* ---- Buttons: brass-gold theme ---- */
+        /* Primary buttons (Bootstrap's blue) → gold */
+        .btn-primary {
+            background: linear-gradient(#a9832f, #8a6d2f);
+            border: 1px solid #6f5622;
+            color: #fdfaf1;
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 600;
+        }
+        .btn-primary:hover { filter: brightness(1.08); background: linear-gradient(#a9832f, #8a6d2f); }
+
+        /* Outline buttons → gold outline */
+        .btn-outline-primary,
+        .btn-outline-light {
+            color: #6f5622;
+            border-color: #a9832f;
+        }
+        .btn-outline-primary:hover,
+        .btn-outline-light:hover {
+            background-color: #a9832f;
+            color: #fdfaf1;
+        }
+        /* Outline-light lives on the dark nav, so it needs light text there */
+        .navbar .btn-outline-light { color: #f4ecd8; border-color: #b08d3f; }
+        .navbar .btn-outline-light:hover { background-color: #b08d3f; color: #241a12; }
+
+        /* Badges → brass instead of Bootstrap blue/gray */
+        .badge.text-bg-primary { background-color: #8a6d2f !important; }
+        .badge.text-bg-secondary { background-color: #7a6650 !important; }
+
+        /* Form inputs → cream with gold focus ring */
+        input, select, textarea {
+            background-color: #fdfaf1 !important;
+            border: 1px solid #c9b48a !important;
+            color: #3b2f2a !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none !important;
+            border-color: #b08d3f !important;
+            box-shadow: 0 0 0 3px rgba(176, 141, 63, 0.20) !important;
+        }
+
+        /* Django validation errors → themed red box */
+        ul.errorlist {
+            list-style: none; padding: 8px 12px; margin: 0 0 8px;
+            background-color: #f6e2d8; border: 1px solid #d9a58a;
+            border-radius: 4px; color: #8a3520; font-size: 0.85rem;
+        }
+    </style>
+
+    {% comment %} Lets an individual page add its OWN extra CSS if it
+       needs something unique, without bloating the base. Optional. {% endcomment %}
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    {% comment %} Shared nav bar — appears on every page automatically.
+       Built once here instead of copy-pasted into 7 files. {% endcomment %}
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+                Assignment Reminder
+            </a>
+            <div class="d-flex gap-2">
+                <a href="{% url 'countdown' %}" class="btn btn-outline-light btn-sm">
+                    Assignments
+                </a>
+                <a href="{% url 'notes_list' %}" class="btn btn-outline-light btn-sm">
+                    Notes
+                </a>
+            </div>
+        </div>
+    </nav>
+    {% comment %} Page content drops in here — the main slot every child fills {% endcomment %}
+    {% block content %}{% endblock %}
+
+    {% comment %} Page-specific scripts (e.g. countdown JS) land here {% endcomment %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
