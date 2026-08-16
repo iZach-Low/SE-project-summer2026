@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
+{% extends "webapp/base.html" %}
+{% block title %}Login{% endblock %}
 
-<body>
+{% block content %}
+{% comment %} Centered card wrapper — the .card styling comes from base.html's theme {% endcomment %}
+<main class="container py-5">
+    <div class="card mx-auto" style="max-width: 460px; padding: 40px 42px;">
 
-    <h1>Login</h1>
+        <h1 class="h3">Login</h1>
+        <p class="text-muted mb-4">Sign in to see your assignments.</p>
 
-    <form method="POST">
-        {% csrf_token %}
+        {% comment %} method="POST" and csrf_token unchanged — backend untouched {% endcomment %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100 mt-2">Login</button>
+        </form>
 
-        {{ form.as_p }}
+        <p class="text-center mt-3 mb-0">
+            Don't have an account?
+            <a href="{% url 'register' %}">Create Account</a>
+        </p>
 
-        <button type="submit">
-            Login
-        </button>
-    </form>
-
-    <p>
-        Don't have an account?
-
-        <a href="{% url 'register' %}">
-            Create Account
-        </a>
-    </p>
-
-</body>
-</html>
+    </div>
+</main>
+{% endblock %}

@@ -1,88 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "webapp/base.html" %}
+{% comment %} page_title comes from the view (Create Note / Edit Note) {% endcomment %}
+{% block title %}{{ page_title }}{% endblock %}
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+{% block content %}
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
 
-    <title>{{ page_title }}</title>
+                    <h1 class="h3 mb-4">{{ page_title }}</h1>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-</head>
+                    {% comment %} Form renders each field individually here (form.title,
+                       form.class_name, form.content) rather than form.as_p — kept exactly
+                       as-is so the backend/form behavior is unchanged {% endcomment %}
+                    <form method="post">
+                        {% csrf_token %}
 
-<body class="bg-light">
+                        <div class="mb-3">
+                            <label class="form-label">Note Title</label>
+                            {{ form.title }}
+                        </div>
 
-    <main class="container py-5">
+                        <div class="mb-3">
+                            <label class="form-label">Class</label>
+                            {{ form.class_name }}
+                        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            {{ form.content }}
+                        </div>
 
-                <div class="card shadow-sm">
-
-                    <div class="card-body p-4">
-
-                        <h1 class="h3 mb-4">
-                            {{ page_title }}
-                        </h1>
-
-                        <form method="post">
-
-                            {% csrf_token %}
-
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Note Title
-                                </label>
-
-                                {{ form.title }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Class
-                                </label>
-
-                                {{ form.class_name }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Notes
-                                </label>
-
-                                {{ form.content }}
-                            </div>
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-                                Save Note
-                            </button>
-
-                            <a
-                                href="{% url 'notes_list' %}"
-                                class="btn btn-outline-secondary"
-                            >
-                                Cancel
-                            </a>
-
-                        </form>
-
-                    </div>
+                        <button type="submit" class="btn btn-primary">Save Note</button>
+                        <a href="{% url 'notes_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </form>
 
                 </div>
-
             </div>
         </div>
-
-    </main>
-
-</body>
-</html>
+    </div>
+</main>
+{% endblock %}
