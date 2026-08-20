@@ -35,7 +35,13 @@
                         <h2 class="h4 mb-1">Upcoming Assignments</h2>
                         <p class="text-muted mb-0">Your nearest deadlines</p>
                     </div>
-                    <span class="badge text-bg-primary">{{ assignments|length }}</span>
+                    {% comment %} Count badge + quick-add button grouped together.
+                       Uses the 'add_assignment' URL name from urls.py so the link
+                       resolves automatically — same pattern as the Notes block. {% endcomment %}
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge text-bg-primary">{{ assignments|length }}</span>
+                        <a href="{% url 'add_assignment' %}" class="btn btn-sm btn-primary">+ Add Assignment</a>
+                    </div>
                 </div>
 
                 <div class="card-body p-4">
