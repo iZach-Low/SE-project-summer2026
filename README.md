@@ -53,13 +53,3 @@ python manage.py createsuperuser
 python manage.py runserver
 
 7. Open your browser to `http://127.0.0.1:8000/`
-
-## Project Structure
-SE-project-summer2026/
-├── requirements.txt
-├── FEATURES.md
-└── summer-project2026/
-└── project/ # Django project root (manage.py here)
-├── manage.py
-├── project/ # Settings and configuration
-└── webapp/ # Main application (models, views, templates)
