@@ -7,13 +7,13 @@
 
 ## Sprint 2 - Assignments Core
 - Assignment model: title, due date/time, class name, done flag (complete)
-- Manual add assignment form (in-progress) *Need button to get to page
+- Manual add assignment form (complete)
 - List view showing all assignments (complete)
 
 ## Sprint 3 - Countdown Logic
 - Calculate time remaining per assignment (complete)
 - Highlight the nearest upcoming assignment (complete)
-- Handle overdue assignments
+- Handle overdue assignments (complete)
 
 ## Sprint 4 - Timer Widget & Editing
 - Fixed-position corner countdown widget on the page
