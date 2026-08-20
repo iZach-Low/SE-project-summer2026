@@ -49,7 +49,25 @@ class AssignmentForm(forms.ModelForm):
         ]
 
         widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Assignment title",
+                }
+            ),
+
+            "class_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Class name",
+                }
+            ),
+
             "due_date": forms.DateTimeInput(
-                attrs={"type": "datetime-local"}
-            )
+                attrs={
+                    "class": "form-control",
+                    "type": "datetime-local",
+                },
+                format="%Y-%m-%dT%H:%M",
+            ),
         }
