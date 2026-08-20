@@ -1,16 +1,8 @@
-What we need before August 10:
-
-- A user management system
-- A Home view of the project (UI)
-- User Stories Def.
-- A full prototype 
-
-
 # FEATURES
 
 ## Sprint 1 - Planning & Setup (complete)
 - Django boilerplate running locally (complete)
-- User stories defined (in-progress)
+- User stories defined (complete)
 - Agreed data model for an assignment (complete)
 
 ## Sprint 2 - Assignments Core
@@ -29,8 +21,8 @@ What we need before August 10:
 - Delete assignment
 
 ## Sprint 5 - User Management & Polish
-- User accounts (register / login / logout) (in-progress)
-- Assignments tied to the logged-in user
+- User accounts (register / login / logout) (complete)
+- Assignments tied to the logged-in user (complete)
 - Visual reminder/alert when an assignment is due soon
 - Styling and empty states
 
